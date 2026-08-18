@@ -1769,34 +1769,22 @@
         optimisticImageUrls
       };
 
-      log.className = 'sp-log sp-log-info'; log.textContent = '📡 Enviando para o servidor seguro...';
+      showAlert('✅ Pronto!', 'Prompt copiado! Cole no Lovable e envie.');
 
-      showAlert('Sucesso', 'Prompt copiado! Cole no Lovable manualmente para enviar.');
-
-      const apiData = result.data || result;
-      if (!apiData) {
-        throw new Error("Resposta do servidor inválida (sem dados).");
-      }
-      
-      const msgId = apiData.ai_message_id_usado || '';
-      
-      // Limpeza e Sucesso
       document.getElementById('sp-msg').value = '';
       spAttachedFiles.forEach(f => {
         if (f.previewUrl) URL.revokeObjectURL(f.previewUrl);
       });
-      spAttachedFiles = []; 
+      spAttachedFiles = [];
       spRenderAttachPreview();
-      
-      log.className = 'sp-log sp-log-success';
-      log.textContent = '✅ Enviado com sucesso!';
-      addToHistory(msg, 'ok');
-      
-      setTimeout(() => { 
-        if (log.textContent === '✅ Enviado com sucesso!') log.textContent = ''; 
-      }, 3000);
 
-      if (msgId) console.log('[Extension] API message ID:', msgId);
+      log.className = 'sp-log sp-log-success';
+      log.textContent = '✅ Prompt enviado para Lovable!';
+      addToHistory(msg, 'ok');
+
+      setTimeout(() => {
+        if (log.textContent === '✅ Prompt enviado para Lovable!') log.textContent = '';
+      }, 3000);
     } catch(err) { 
       console.error('[Extension] Erro crítico no handleSend:', err);
       log.className = 'sp-log sp-log-error'; 
