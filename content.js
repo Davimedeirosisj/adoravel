@@ -648,6 +648,7 @@ setInterval(() => {
   const chatInput = flFindChatInput();
   if (chatInput && !chatInput.dataset.flIntercepted) {
     chatInput.dataset.flIntercepted = "true";
+    console.log("[FreeLovable] Chat input encontrado e interceptado");
 
     chatInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' && !e.shiftKey) {
@@ -664,6 +665,7 @@ setInterval(() => {
             }
 
             if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.id) {
+              console.log("[FreeLovable] Prompt capturado:", prompt.substring(0, 50) + "...");
               flSafeSendRuntimeMessage({
                 action: "OFFICIAL_PROMPT_CAPTURED",
                 prompt: prompt
