@@ -853,7 +853,6 @@
             </div>
 
             <button id="sp-license-btn" class="sp-btn-primary">Ativar licença</button>
-            <button id="sp-transfer-device-btn" class="sp-btn-primary" style="display:none; margin-top:10px; background:#27272a; border:1px solid rgba(255,255,255,0.08);">Usar neste dispositivo</button>
             ${(spRemoteConfig.ui && spRemoteConfig.ui.show_support_link === false) ? '' : '<a href="' + spEscapeHtml(spGetBranding().support_url || DEFAULT_REMOTE_CONFIG.branding.support_url) + '" target="_blank" style="display:block; text-align:center; padding:10px; margin-top:12px; border-radius:12px; background:rgba(255,255,255,0.03); border:1px solid var(--fl-border); color:var(--fl-text-muted); text-decoration:none; font-size:11px; font-weight:700; transition:all 0.2s; box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 4px 8px rgba(0,0,0,0.2);">' + spEscapeHtml(spGetBranding().support_label || DEFAULT_REMOTE_CONFIG.branding.support_label) + '</a>'}
             ${spGetCommunityUrl() ? '<a href="' + spEscapeHtml(spGetCommunityUrl()) + '" target="_blank" class="sp-community-link" style="margin-top:10px;">Fa&ccedil;a parte da nossa comunidade!</a>' : ''}
             <div id="sp-license-log" class="sp-log"></div>
@@ -862,7 +861,6 @@
       `;
 
       const btn = document.getElementById('sp-license-btn');
-      const transferBtn = document.getElementById('sp-transfer-device-btn');
       const input = document.getElementById('sp-license-input');
 
       if (input && input.parentElement && !document.getElementById('sp-license-toggle')) {
@@ -882,53 +880,10 @@
 
       bindThemeButtons();
       if (btn) btn.addEventListener('click', validateLicense);
-      if (transferBtn) transferBtn.addEventListener('click', transferDeviceForCurrentLicense);
       if (input) {
         input.addEventListener('keydown', e => { if (e.key === 'Enter') validateLicense(); });
         setTimeout(() => { try { input.focus(); } catch(e) {} }, 100);
       }
-    }
-  }
-
-  function spToggleTransferDeviceButton(visible) {
-    const btn = document.getElementById('sp-transfer-device-btn');
-    if (btn) btn.style.display = visible ? '' : 'none';
-  }
-
-  async function transferDeviceForCurrentLicense() {
-    const input = document.getElementById('sp-license-input');
-    const log = document.getElementById('sp-license-log');
-    const key = input ? input.value.trim() : '';
-    if (!key || !log) return;
-
-    spToggleTransferDeviceButton(false);
-    log.style.color = '#a1a1aa';
-    log.innerHTML = 'Transferindo dispositivo...';
-
-    try { if(!deviceId) deviceId = await getDeviceId(); } catch(e) {}
-
-    try {
-      const resp = await safeSendMessage({
-        action: "apiAction",
-        subAction: "TRANSFER_DEVICE",
-        payload: { license_key: key, device_id: deviceId }
-      });
-
-      const res = (resp && resp.data) || {};
-      if (resp && resp.ok && res.success) {
-        log.style.color = '#22c55e';
-        log.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> ' + spEscapeHtml(res.message || 'Dispositivo atualizado com sucesso.');
-        setTimeout(() => validateLicense(key), 250);
-        return;
-      }
-
-      log.style.color = '#ef4444';
-      log.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg> ' + spEscapeHtml(res.message || res.reason || 'Falha ao transferir dispositivo');
-      spToggleTransferDeviceButton(true);
-    } catch (e) {
-      log.style.color = '#ef4444';
-      log.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg> Erro ao transferir dispositivo';
-      spToggleTransferDeviceButton(true);
     }
   }
 
