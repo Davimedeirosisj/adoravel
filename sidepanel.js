@@ -1906,25 +1906,7 @@
 
       log.className = 'sp-log sp-log-info'; log.textContent = '📡 Enviando para o servidor seguro...';
 
-      const resultResp = await safeSendMessage({
-        action: "proxyFetch",
-        url: API_PROXY_COMMAND_URL,
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-
-      const result = resultResp && resultResp.data;
-
-      if (!result) {
-        throw new Error("Não foi possível conectar ao servidor (sem resposta).");
-      }
-
-      if (result.success === false) {
-        console.error('[Extension] Erro retornado pelo servidor:', result);
-        const errMsg = result.error_display || result.message || result.error || "Erro desconhecido no servidor";
-        throw new Error(errMsg);
-      }
+      showAlert('Sucesso', 'Prompt copiado! Cole no Lovable manualmente para enviar.');
 
       const apiData = result.data || result;
       if (!apiData) {
