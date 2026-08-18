@@ -2141,28 +2141,11 @@
 
     spRenderShell();
     spBindShellEvents();
-    const configResult = await spFetchRemoteConfig();
-    if (configResult.mustForceUpdate) {
-      spRenderForceUpdateScreen();
-      return;
-    }
-    if (!configResult.configReady) {
-      spRenderStateScreen(
-        'Configuração indisponível',
-        'Não foi possível carregar a configuração remota da extensão.',
-        'Tentar novamente',
-        () => window.location.reload(),
-        'Usar chave',
-        () => showLicenseGate(),
-      );
-      return;
-    }
+    spApplyShellConfig();
 
     try {
       chrome.runtime.onMessage.addListener((msg) => {
-        if (msg && msg.action === 'forceLicenseGate') {
-          forceLicenseGate('Digite sua chave SKU novamente para continuar');
-        } else if (msg && msg.action === 'REFRESH_HISTORY') {
+        if (msg && msg.action === 'REFRESH_HISTORY') {
           if (spActiveTab === 'history') {
             loadChatHistory(function() { renderHistoryTab(); });
           } else {
@@ -2173,14 +2156,7 @@
     } catch(e) {}
 
     chrome.storage.local.get(["fl_dark_mode"], r => { if(r.fl_dark_mode === false) document.body.classList.add('sp-light'); });
-    try {
-      // VERSÃO ABERTA: Abre painel direto sem validação
-      if (spNeedsForcedUpdate()) spRenderForceUpdateScreen();
-      else showMainUI();
-    } catch (err) {
-      console.error("[Adorável] Erro:", err);
-      showMainUI(); // Fallback
-    }
+    showMainUI();
   })();
 
 
