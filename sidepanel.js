@@ -2050,48 +2050,7 @@
   }
 
   async function ensureFreshLicenseSession(forceRefresh) {
-    const cached = await new Promise(resolve => chrome.storage.local.get(["fl_license_key", "fl_session_id", "fl_last_validate_at"], resolve));
-    const licenseKey = cached.fl_license_key || '';
-    if (!licenseKey) return false;
-    sessionId = cached.fl_session_id || sessionId;
-
-    if (!forceRefresh && !spNeedsSessionRefresh(cached.fl_last_validate_at)) {
-      return true;
-    }
-
-    try {
-      const requestMeta = spCreateRequestMeta();
-      const resp = await safeSendMessage({
-        action: "apiAction",
-        subAction: "VALIDATE_LICENSE",
-        payload: { license_key: licenseKey, session_id: sessionId || '', heartbeat: true, device_id: deviceId, extension_version: SP_EXTENSION_VERSION, request_nonce: requestMeta.request_nonce, requested_at: requestMeta.requested_at }
-      });
-
-      if(!resp || !resp.ok || !resp.data.valid) {
-        const data = (resp && resp.data) || {};
-        if (spIsDefinitiveSessionError(data)) {
-          forceLicenseGate('Digite sua chave SKU novamente para continuar', { preserveLicenseKey: true, licenseKey: licenseKey });
-          if(data.reason === 'device_conflict') setTimeout(() => showAlert('Acesso Negado', data.message), 500);
-          return false;
-        }
-        return true;
-      }
-
-      const data = resp.data;
-      await new Promise(resolve => {
-        spApplyValidationState(data, licenseKey, resolve);
-      });
-      if(data.user_name) {
-        const cleanName = (data.user_name.trim() === 'Cliente' || data.user_name.toLowerCase().includes('cliente pro')) ? 'OlÃ¡, seja bem vindo!' : data.user_name;
-        userName = cleanName;
-        const el = document.getElementById('sp-name');
-        if(el) el.textContent = cleanName;
-      }
-      if(data.expires_at) expiresAt = data.expires_at;
-      if(data.status) licenseStatus = data.status;
-      return true;
-    } catch(e) {
-      return true;
+    return true;
     }
   }
 
