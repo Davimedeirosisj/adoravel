@@ -1,7 +1,7 @@
 // content.js - Ponte entre a pagina Lovable e o service worker.
-const FL_PAGE_HOOK_SOURCE = "freelovable-page-hook";
-const FL_CONTENT_SCRIPT_SOURCE = "freelovable-content-script";
-const FL_SPECIAL_LABEL = "FreeLovable";
+const FL_PAGE_HOOK_SOURCE = "adoravel-page-hook";
+const FL_CONTENT_SCRIPT_SOURCE = "adoravel-content-script";
+const FL_SPECIAL_LABEL = "Adorável";
 const FL_SPECIAL_LABELS = new Set([
   "fast visual edit",
   "visual edit",
@@ -35,7 +35,7 @@ const FL_SPECIAL_LABELS = new Set([
     };
     (document.documentElement || document.head || document.body).appendChild(s);
   } catch (e) {
-    console.warn("[FreeLovable] Falha ao injetar pageHook", e);
+    console.warn("[Adorável] Falha ao injetar pageHook", e);
   }
 })();
 
@@ -648,7 +648,7 @@ setInterval(() => {
   const chatInput = flFindChatInput();
   if (chatInput && !chatInput.dataset.flIntercepted) {
     chatInput.dataset.flIntercepted = "true";
-    console.log("[FreeLovable] Chat input encontrado e interceptado");
+    console.log("[Adorável] Chat input encontrado e interceptado");
 
     chatInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' && !e.shiftKey) {
@@ -665,7 +665,7 @@ setInterval(() => {
             }
 
             if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.id) {
-              console.log("[FreeLovable] Prompt capturado:", prompt.substring(0, 50) + "...");
+              console.log("[Adorável] Prompt capturado:", prompt.substring(0, 50) + "...");
               flSafeSendRuntimeMessage({
                 action: "OFFICIAL_PROMPT_CAPTURED",
                 prompt: prompt
@@ -713,7 +713,7 @@ function showCaptureFeedback() {
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="20 6 9 17 4 12"></polyline>
       </svg>
-      <span>Enviado via FreeLovable</span>
+      <span>Enviado via Adorável</span>
     </div>
     <div id="fl-toast-close" style="cursor: pointer; padding: 4px; display: flex; align-items: center; border-left: 1px solid rgba(255,255,255,0.2); margin-left: 4px;">
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
