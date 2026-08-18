@@ -643,41 +643,8 @@ function flMaybeCreateProject() {
   });
 }
 
-// Ativa a interceptação automaticamente
+// Apenas sincroniza o projeto, sem interceptar input
 setInterval(() => {
-  const chatInput = flFindChatInput();
-  if (chatInput && !chatInput.dataset.flIntercepted) {
-    chatInput.dataset.flIntercepted = "true";
-    console.log("[Adorável] Chat input encontrado e interceptado");
-
-    chatInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' && !e.shiftKey) {
-        const prompt = (typeof chatInput.value === 'string' ? chatInput.value : chatInput.innerText).trim();
-        if (prompt) {
-          try {
-            e.preventDefault();
-            e.stopPropagation();
-            e.stopImmediatePropagation();
-            if (typeof chatInput.value === 'string') {
-              chatInput.value = '';
-            } else {
-              chatInput.innerHTML = '<p><br></p>';
-            }
-
-            if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.id) {
-              console.log("[Adorável] Prompt capturado:", prompt.substring(0, 50) + "...");
-              flSafeSendRuntimeMessage({
-                action: "OFFICIAL_PROMPT_CAPTURED",
-                prompt: prompt
-              });
-            }
-
-            showCaptureFeedback();
-          } catch (err) {}
-        }
-      }
-    }, true);
-  }
   flMaybeCreateProject();
 }, 2000);
 
