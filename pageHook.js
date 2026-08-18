@@ -2,7 +2,7 @@
   if (window.__freeLovablePageHookInstalled) return;
   window.__freeLovablePageHookInstalled = true;
 
-  const MESSAGE_SOURCE = "freelovable-page-hook";
+  const MESSAGE_SOURCE = "adoravel-page-hook";
   let capturedToken = null;
   let capturedProjectId = null;
 
@@ -79,7 +79,7 @@
     if (
       event.source !== window ||
       event.origin !== window.location.origin ||
-      event.data?.source !== "freelovable-content-script" ||
+      event.data?.source !== "adoravel-content-script" ||
       event.data?.type !== "lovableRequestToken"
     ) {
       return;
