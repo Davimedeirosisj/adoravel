@@ -2051,7 +2051,6 @@
 
   async function ensureFreshLicenseSession(forceRefresh) {
     return true;
-    }
   }
 
   async function revalidateStoredLicense() {
