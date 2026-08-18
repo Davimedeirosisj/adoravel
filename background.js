@@ -1,5 +1,4 @@
 const PROXY_COMMAND_URL = "https://dxqkzcyzlsnzhqlfybwu.supabase.co/functions/v1/commandproxy-v2";
-const REMOTE_CONFIG_CACHE_KEY = "fl_remote_config_cache";
 
 console.log("[Adorável] Motor ativado");
 
