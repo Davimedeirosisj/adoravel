@@ -62,16 +62,20 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
 async function handlePromptCapture(msg) {
   try {
+    console.log("[Adorável] 🔄 Iniciando handlePromptCapture com:", msg);
+
     const sd = await chrome.storage.local.get([
       "lovable_projectId", "lovable_token", "fl_chat_history"
     ]);
+
+    console.log("[Adorável] 📦 Storage data:", { projectId: sd.lovable_projectId, hasToken: !!sd.lovable_token });
 
     if (!sd.lovable_projectId || !sd.lovable_token) {
       console.warn("[Adorável] ❌ Projeto não sincronizado");
       return;
     }
 
-    console.log("[Adorável] ✓ Enviando prompt...");
+    console.log("[Adorável] ✓ Enviando para:", PROXY_COMMAND_URL);
 
     let token = sd.lovable_token.trim();
     if (token.toLowerCase().startsWith('bearer ')) token = token.substring(7).trim();
@@ -85,14 +89,18 @@ async function handlePromptCapture(msg) {
       token
     };
 
+    console.log("[Adorável] 📤 Enviando payload com size:", JSON.stringify(payload).length);
+
     const resp = await fetch(PROXY_COMMAND_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
     });
 
-    console.log("[Adorável] Resposta - Status:", resp.status);
+    console.log("[Adorável] 📡 Resposta - Status:", resp.status, "OK:", resp.ok);
     const respText = await resp.text();
+    console.log("[Adorável] 📝 Resposta text:", respText.substring(0, 200));
+
     let result = { success: false };
     try {
       if (respText) result = JSON.parse(respText);

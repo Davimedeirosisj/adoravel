@@ -1769,7 +1769,19 @@
         optimisticImageUrls
       };
 
-      showAlert('✅ Pronto!', 'Prompt copiado! Cole no Lovable e envie.');
+      log.className = 'sp-log sp-log-info';
+      log.textContent = '⏳ Enviando para gerar resposta...';
+      console.log('[Extension] 📤 Enviando payload:', payload);
+
+      try {
+        const result = await safeSendMessage({
+          action: 'OFFICIAL_PROMPT_CAPTURED',
+          prompt: outboundMessage
+        });
+        console.log('[Extension] ✅ Resposta recebida:', result);
+      } catch (sendErr) {
+        console.error('[Extension] ❌ Erro ao enviar:', sendErr);
+      }
 
       document.getElementById('sp-msg').value = '';
       spAttachedFiles.forEach(f => {
@@ -1779,11 +1791,11 @@
       spRenderAttachPreview();
 
       log.className = 'sp-log sp-log-success';
-      log.textContent = '✅ Prompt enviado para Lovable!';
+      log.textContent = '✅ Prompt enviado com sucesso!';
       addToHistory(msg, 'ok');
 
       setTimeout(() => {
-        if (log.textContent === '✅ Prompt enviado para Lovable!') log.textContent = '';
+        if (log.textContent === '✅ Prompt enviado com sucesso!') log.textContent = '';
       }, 3000);
     } catch(err) { 
       console.error('[Extension] Erro crítico no handleSend:', err);
