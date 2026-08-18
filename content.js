@@ -739,11 +739,11 @@ function flReplaceSecurityLabels(root = document.body) {
         let textNode;
         while ((textNode = walker.nextNode())) {
           if (shouldReplaceLabel(textNode.nodeValue)) {
-            textNode.nodeValue = 'FreeLovable';
+            textNode.nodeValue = 'Adorável';
             continue;
           }
           if (String(textNode.nodeValue || '').trim() === 'Verificação de segurança') {
-            textNode.nodeValue = 'FreeLovable';
+            textNode.nodeValue = 'Adorável';
           }
         }
       } catch (e) {}
@@ -757,10 +757,10 @@ function flReplaceSecurityLabels(root = document.body) {
             if (el.childNodes && el.childNodes.length === 1 && el.childNodes[0].nodeType === Node.TEXT_NODE) {
               const onlyText = String(el.textContent || '').trim();
               if (shouldReplaceLabel(onlyText)) {
-                el.textContent = 'FreeLovable';
+                el.textContent = 'Adorável';
               }
               if (onlyText === 'Verificação de segurança') {
-                el.textContent = 'FreeLovable';
+                el.textContent = 'Adorável';
               }
             }
             ['aria-label', 'title'].forEach((attr) => {
@@ -812,7 +812,7 @@ function flInjectSecurityLabelStyles() {
         color: transparent !important;
       }
       .special-message[data-fl-security-label="1"]::after {
-        content: "FreeLovable";
+        content: "Adorável";
         position: absolute;
         inset: 0;
         color: inherit;
