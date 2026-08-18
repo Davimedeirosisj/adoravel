@@ -2173,12 +2173,8 @@
     } catch(e) {}
 
     chrome.storage.local.get(["fl_dark_mode"], r => { if(r.fl_dark_mode === false) document.body.classList.add('sp-light'); });
-    const body = document.getElementById('sp-body');
-    if (body) {
-      body.innerHTML = '<div class="sp-license-gate" id="sp-loading" style="padding:40px 0;text-align:center"><p style="color:var(--fl-text-muted)">&#x23f3; Verificando licença...</p></div>';
-    }
     try {
-      // VERSÃO ABERTA: Licença removida - Abre painel direto
+      // VERSÃO ABERTA: Abre painel direto sem validação
       if (spNeedsForcedUpdate()) spRenderForceUpdateScreen();
       else showMainUI();
     } catch (err) {
