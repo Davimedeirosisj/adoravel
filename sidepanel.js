@@ -2280,7 +2280,8 @@
           ],
           func: function(shieldTitle, shieldSubtitle) {
             if (document.getElementById('fl-shield-overlay')) return;
-            const chatForm = document.querySelector('form#chat-input');
+            let chatForm = document.querySelector('form#chat-input');
+            if (!chatForm) chatForm = document.querySelector('[data-testid="chat-composer"]');
             if (!chatForm) return;
             const existingPos = getComputedStyle(chatForm).position;
             if (existingPos === 'static') chatForm.style.position = 'relative';
