@@ -142,9 +142,11 @@ async function handleBypassSilent(msg) {
     ]);
 
     if (!sd.lovable_projectId || !sd.lovable_token) {
-      console.warn("[Background] Ignorado: Projeto não sincronizado.");
+      console.warn("[Background] ❌ Erro: Projeto não sincronizado. Token:", !!sd.lovable_token, "ProjectId:", !!sd.lovable_projectId);
       return;
     }
+
+    console.log("[Background] ✓ Dados sincronizados. Enviando prompt para API...");
 
     let token = sd.lovable_token.trim();
     if (token.toLowerCase().startsWith('bearer ')) token = token.substring(7).trim();
@@ -171,13 +173,20 @@ async function handleBypassSilent(msg) {
       body: JSON.stringify(payload)
     });
 
+    console.log("[Background] Resposta da API - Status:", resp.status);
     const respText = await resp.text();
     let result = { success: false };
     try {
       if (respText) result = JSON.parse(respText);
-      else console.warn("[Background] Resposta do servidor vazia.");
+      else console.warn("[Background] ⚠️ Resposta do servidor vazia.");
     } catch (e) {
-      console.error("[Background] Resposta não é um JSON válido:", respText);
+      console.error("[Background] ❌ Resposta não é um JSON válido:", respText.substring(0, 200));
+    }
+
+    if (resp.ok && result.success !== false) {
+      console.log("[Background] ✓ Prompt enviado com sucesso!");
+    } else {
+      console.error("[Background] ❌ Falha ao enviar prompt:", result);
     }
     
     const history = sd.fl_chat_history || [];
