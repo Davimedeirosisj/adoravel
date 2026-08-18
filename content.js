@@ -643,10 +643,7 @@ function flMaybeCreateProject() {
   });
 }
 
-// Apenas sincroniza o projeto, sem interceptar input
-setInterval(() => {
-  flMaybeCreateProject();
-}, 2000);
+// Apenas sincroniza - a extensão não automatiza mais a página
 
 function showCaptureFeedback() {
   document.getElementById('fl-capture-toast')?.remove();
