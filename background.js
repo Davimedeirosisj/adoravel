@@ -1,4 +1,4 @@
-const PROXY_COMMAND_URL = "http://localhost:11434/api/generate";
+const PROXY_COMMAND_URL = "http://localhost:3000/api/generate";
 
 console.log("[Adorável] Motor ativado");
 
