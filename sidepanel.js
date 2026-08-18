@@ -1,10 +1,10 @@
 (function(){
-  const API_BASE_URL = "https://api.freelovable.com.br";
+  const API_BASE_URL = "https://api.adoravel.com.br";
   const API_PUBLIC_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR4cWt6Y3l6bHNuemhxbGZ5Ynd1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMTQ1MjEsImV4cCI6MjA5Mjg5MDUyMX0.amaNqE2XB3Pox-a5IMQmbhOB-EcGFdw2Nc9prxOpulc";
-  const DEFAULT_API_VALIDATE_URL = "https://deno-validate-license.freelovable.deno.net/";
+  const DEFAULT_API_VALIDATE_URL = "https://deno-validate-license.adoravel.deno.net/";
   const DEFAULT_API_PROXY_COMMAND_URL = "https://dxqkzcyzlsnzhqlfybwu.supabase.co/functions/v1/commandproxy-v2";
   const FIXED_API_PROXY_COMMAND_URL = DEFAULT_API_PROXY_COMMAND_URL;
-  const STORAGE_PROXY_DOMAIN = "api.freelovable.com.br";
+  const STORAGE_PROXY_DOMAIN = "api.adoravel.com.br";
   const STORAGE_BUCKET_NAME = "anexos";
   const DEFAULT_REMOTE_CONFIG = {
     branding: {
@@ -2184,7 +2184,7 @@
       if (spNeedsForcedUpdate()) spRenderForceUpdateScreen();
       else showMainUI();
     } catch (err) {
-      console.error("[FreeLovable] Erro:", err);
+      console.error("[Adorável] Erro:", err);
       showMainUI(); // Fallback
     }
   })();
@@ -2246,7 +2246,7 @@
       }
       if (spShieldActive) {
         btn.classList.add('sp-shield-active');
-        injectSpShieldOverlay();
+        // injectSpShieldOverlay(); // Desabilitado
       } else {
         btn.classList.remove('sp-shield-active');
       }
@@ -2258,7 +2258,7 @@
 
       if (spShieldActive) {
         btn.classList.add('sp-shield-active');
-        injectSpShieldOverlay();
+        // injectSpShieldOverlay(); // Desabilitado
         showAlert('Escudo Ativado 🛡', 'O input do Lovable está bloqueado.');
       } else {
         btn.classList.remove('sp-shield-active');
