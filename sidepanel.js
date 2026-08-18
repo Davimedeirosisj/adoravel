@@ -587,48 +587,8 @@
   }
 
   async function spFetchRemoteConfig() {
-    try {
-      const cachedConfigRaw = await new Promise(resolve => chrome.storage.local.get([SP_REMOTE_CONFIG_CACHE_KEY], resolve));
-      const cachedConfig = cachedConfigRaw[SP_REMOTE_CONFIG_CACHE_KEY];
-      const storageData = await new Promise(resolve => chrome.storage.local.get(["fl_license_key", "fl_session_id"], resolve));
-      const requestMeta = spCreateRequestMeta();
-      const resp = await safeSendMessage({
-        action: "apiAction",
-        subAction: "GET_CONFIG",
-        payload: {
-          request_nonce: requestMeta.request_nonce,
-          requested_at: requestMeta.requested_at,
-          extension_version: SP_EXTENSION_VERSION,
-          device_id: deviceId,
-          license_key: storageData.fl_license_key || "",
-          session_id: storageData.fl_session_id || ""
-        }
-      });
-      const responseOk = !!(resp && resp.ok);
-      const metaValid = responseOk && spValidateResponseMeta(resp.data && resp.data.response_meta, requestMeta.request_nonce, deviceId);
-      const rawConfig = responseOk ? (resp.data && (resp.data.config || resp.data.data || resp.data)) : null;
-      if (rawConfig && typeof rawConfig === 'object') {
-        spRemoteConfig = spMergeRemoteConfig(rawConfig);
-        spConfigState = { loaded: true, source: metaValid ? 'remote' : 'remote_unverified', error: metaValid ? '' : 'response_meta_invalid' };
-        chrome.storage.local.set({ [SP_REMOTE_CONFIG_CACHE_KEY]: spRemoteConfig });
-      } else if (cachedConfig && typeof cachedConfig === 'object') {
-        spRemoteConfig = spMergeRemoteConfig(cachedConfig);
-        spConfigState = { loaded: true, source: 'cache', error: 'remote_config_missing' };
-      } else {
-        spRemoteConfig = JSON.parse(JSON.stringify(DEFAULT_REMOTE_CONFIG));
-        spConfigState = { loaded: false, source: 'default', error: 'remote_config_missing' };
-      }
-    } catch (err) {
-      const cachedConfigRaw = await new Promise(resolve => chrome.storage.local.get([SP_REMOTE_CONFIG_CACHE_KEY], resolve));
-      const cachedConfig = cachedConfigRaw[SP_REMOTE_CONFIG_CACHE_KEY];
-      if (cachedConfig && typeof cachedConfig === 'object') {
-        spRemoteConfig = spMergeRemoteConfig(cachedConfig);
-        spConfigState = { loaded: true, source: 'cache', error: err && err.message ? err.message : 'remote_config_unavailable' };
-      } else {
-        spRemoteConfig = JSON.parse(JSON.stringify(DEFAULT_REMOTE_CONFIG));
-        spConfigState = { loaded: false, source: 'default', error: err && err.message ? err.message : 'remote_config_unavailable' };
-      }
-    }
+    spRemoteConfig = JSON.parse(JSON.stringify(DEFAULT_REMOTE_CONFIG));
+    spConfigState = { loaded: true, source: 'default', error: '' };
     spApplyShellConfig();
     spApplyApiConfig();
     return { mustForceUpdate: spNeedsForcedUpdate(), configReady: spConfigState.loaded };
