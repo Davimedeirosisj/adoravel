@@ -326,6 +326,7 @@ function flIsVisible(el) {
 
 function flFindChatInput() {
   const selectors = [
+    'div[data-testid="chat-composer-editor"]',
     'form#chat-input div[contenteditable="true"][aria-label="Chat input"]',
     '#chatinput div[contenteditable="true"][aria-label="Chat input"]',
     'textarea[placeholder*="Ask Lovable"]',
@@ -353,6 +354,7 @@ function flFindChatInput() {
 
 function flFindSendButton(chatInput) {
   const selectors = [
+    'button[data-testid="chat-input-send"]',
     'button#chatinput-send-message-button',
     'form#chat-input button[type="submit"]',
     'button[type="submit"]',
