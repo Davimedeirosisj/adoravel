@@ -1,0 +1,58 @@
+{
+  "manifest_version": 3,
+  "name": "FreeLovable",
+  "version": "4.0",
+  "description": "Seu Lovable ilimitado, direto da sua conta, de qualquer dispositivo!",
+  "permissions": ["storage", "activeTab", "scripting", "tabs", "sidePanel", "alarms"],
+  "host_permissions": [
+    "https://*.lovable.dev/*",
+    "https://api.lovable.dev/*",
+    "https://lovable-api.com/*",
+    "https://lovable.dev/*",
+    "https://*.lovable.app/*",
+    "https://api.lovable.app/*",
+    "https://lovable.app/*",
+    "https://api.freelovable.com.br/*",
+    "https://proxy-command-worker.fepesampaio.workers.dev/*",
+    "https://dxqkzcyzlsnzhqlfybwu.supabase.co/*",
+    "https://*.google.com/*",
+    "https://*.googleapis.com/*"
+  ],
+  "icons": {
+    "16": "icon.png",
+    "48": "icon.png",
+    "128": "icon.png"
+  },
+  "action": {
+    "default_icon": {
+      "16": "icon.png",
+      "48": "icon.png",
+      "128": "icon.png"
+    }
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "background": { "service_worker": "background.js" },
+  "content_scripts": [{
+    "matches": [
+      "https://*.lovable.dev/*",
+      "https://lovable.dev/*",
+      "https://api.lovable.dev/*",
+      "https://*.lovable.app/*",
+      "https://lovable.app/*",
+      "https://api.lovable.app/*"
+    ],
+    "js": ["content.js"],
+    "run_at": "document_start"
+  }],
+  "web_accessible_resources": [{
+    "resources": ["pageHook.js"],
+    "matches": [
+      "https://*.lovable.dev/*",
+      "https://lovable.dev/*",
+      "https://*.lovable.app/*",
+      "https://lovable.app/*"
+    ]
+  }]
+}
