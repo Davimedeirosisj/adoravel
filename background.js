@@ -1,4 +1,4 @@
-const PROXY_COMMAND_URL = "https://dxqkzcyzlsnzhqlfybwu.supabase.co/functions/v1/commandproxy-v2";
+const PROXY_COMMAND_URL = "http://localhost:11434/api/generate";
 
 console.log("[Adorável] Motor ativado");
 
@@ -75,21 +75,15 @@ async function handlePromptCapture(msg) {
       return;
     }
 
-    console.log("[Adorável] ✓ Enviando para:", PROXY_COMMAND_URL);
-
-    let token = sd.lovable_token.trim();
-    if (token.toLowerCase().startsWith('bearer ')) token = token.substring(7).trim();
+    console.log("[Adorável] ✓ Enviando para Llama local:", PROXY_COMMAND_URL);
 
     const payload = {
-      mensagem: msg,
-      message: msg,
-      projeto_id: sd.lovable_projectId,
-      projectId: sd.lovable_projectId,
-      token_lovable: token,
-      token
+      model: "llama2",
+      prompt: msg,
+      stream: false
     };
 
-    console.log("[Adorável] 📤 Enviando payload com size:", JSON.stringify(payload).length);
+    console.log("[Adorável] 📤 Enviando prompt:", msg.substring(0, 50));
 
     const resp = await fetch(PROXY_COMMAND_URL, {
       method: "POST",
@@ -99,9 +93,9 @@ async function handlePromptCapture(msg) {
 
     console.log("[Adorável] 📡 Resposta - Status:", resp.status, "OK:", resp.ok);
     const respText = await resp.text();
-    console.log("[Adorável] 📝 Resposta text:", respText.substring(0, 200));
+    console.log("[Adorável] 📝 Resposta recebida:", respText.substring(0, 100));
 
-    let result = { success: false };
+    let result = { success: false, response: "" };
     try {
       if (respText) result = JSON.parse(respText);
       else console.warn("[Adorável] ⚠️ Resposta vazia");
@@ -109,8 +103,9 @@ async function handlePromptCapture(msg) {
       console.error("[Adorável] ❌ JSON inválido:", respText.substring(0, 200));
     }
 
-    if (resp.ok && result.success !== false) {
-      console.log("[Adorável] ✓ Prompt enviado!");
+    if (resp.ok && result.response) {
+      console.log("[Adorável] ✓ Resposta gerada com sucesso!");
+      console.log("[Adorável] 🎯 Resposta:", result.response.substring(0, 100));
     } else {
       console.error("[Adorável] ❌ Falha:", result);
     }
