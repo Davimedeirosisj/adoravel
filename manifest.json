@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "FreeLovable",
+  "name": "Adorável",
   "version": "4.0",
-  "description": "Seu Lovable ilimitado, direto da sua conta, de qualquer dispositivo!",
+  "description": "Capture prompts do Lovable direto da sua conta",
   "permissions": ["storage", "activeTab", "scripting", "tabs", "sidePanel", "alarms"],
   "host_permissions": [
     "https://*.lovable.dev/*",
@@ -12,11 +12,7 @@
     "https://*.lovable.app/*",
     "https://api.lovable.app/*",
     "https://lovable.app/*",
-    "https://api.freelovable.com.br/*",
-    "https://proxy-command-worker.fepesampaio.workers.dev/*",
-    "https://dxqkzcyzlsnzhqlfybwu.supabase.co/*",
-    "https://*.google.com/*",
-    "https://*.googleapis.com/*"
+    "https://dxqkzcyzlsnzhqlfybwu.supabase.co/*"
   ],
   "icons": {
     "16": "icon.png",
